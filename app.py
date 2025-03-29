@@ -9,11 +9,9 @@ from src.visualizations import (
     create_heatmap,
     create_profit_loss_chart,
 )
-from src.vol_surface import get_volatility_surface
 
 st.set_page_config(layout="wide", page_title="Options Pricer", page_icon="📈")
 
-# Sidebar
 st.sidebar.markdown(
     """
     <style>
@@ -100,18 +98,6 @@ st.sidebar.subheader("Heatmap Parameters")
 heatmap_price_range = st.sidebar.slider("Stock Price Range (%)", min_value=10, max_value=300, value=(80, 120), step=5)
 heatmap_volatility_range = st.sidebar.slider(
     "Volatility Range (%)", min_value=10, max_value=500, value=(50, 150), step=10
-)
-
-st.sidebar.markdown("---")
-
-st.sidebar.subheader("Volatility Surface Parameters")
-use_moneyness = st.sidebar.checkbox("Use Moneyness for Y-axis", value=True)
-filter_range = st.sidebar.slider(
-    "Moneyness Range" if use_moneyness else "Strike Range (%)",
-    min_value=0.5 if use_moneyness else 50,
-    max_value=2.0 if use_moneyness else 200,
-    value=(0.8, 1.2) if use_moneyness else (80, 120),
-    step=0.05 if use_moneyness else 5,
 )
 
 # Body
@@ -247,26 +233,3 @@ with col1:
     st.plotly_chart(create_greeks_plot(S_range, call_greeks_values, "Call Option Greeks"))
 with col2:
     st.plotly_chart(create_greeks_plot(S_range, put_greeks_values, "Put Option Greeks"))
-
-st.markdown("---")
-
-st.subheader("Implied Volatility Surface")
-
-actual_filter_range = filter_range
-if not use_moneyness:
-    actual_filter_range = (S * filter_range[0] / 100, S * filter_range[1] / 100)
-
-with st.spinner("Fetching option chain data..."):
-    call_surface, put_surface, _ = get_volatility_surface(ticker, r, q, use_moneyness, actual_filter_range)
-
-col1, col2 = st.columns(2)
-with col1:
-    if call_surface:
-        st.plotly_chart(call_surface, use_container_width=True)
-    else:
-        st.info("Could not generate call option volatility surface.")
-with col2:
-    if put_surface:
-        st.plotly_chart(put_surface, use_container_width=True)
-    else:
-        st.info("Could not generate put option volatility surface.")
