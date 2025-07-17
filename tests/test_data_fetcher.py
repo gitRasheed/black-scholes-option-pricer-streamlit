@@ -25,7 +25,7 @@ def mock_yfinance(monkeypatch):
         def info(self):
             return {
                 "regularMarketPrice": 150.0,
-                "dividendYield": 0.02,
+                "dividendYield": 2.0,
                 "longName": "Test Company",
             }
 
