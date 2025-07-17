@@ -64,7 +64,7 @@ def fetch_stock_data(ticker):
 
         dividend_yield = 0.0
         if "dividendYield" in info and info["dividendYield"] is not None:
-            dividend_yield = float(info["dividendYield"])
+            dividend_yield = float(info["dividendYield"])  # yfinance returns as decimal
 
         current_price = 0.0
         if "regularMarketPrice" in info and info["regularMarketPrice"] is not None:
@@ -74,12 +74,12 @@ def fetch_stock_data(ticker):
 
         volatility = 0.0
         if not history.empty and len(history) > 1:
-            volatility = float(history["Close"].pct_change().dropna().std() * (252**0.5))
+            volatility = float(history["Close"].pct_change().dropna().std() * (252**0.5))  # Returns as decimal
 
         return {
             "current_price": current_price,
             "volatility": volatility,
-            "dividend_yield": dividend_yield,
+            "dividend_yield": dividend_yield,  # Decimal (e.g., 0.02 for 2%)
             "company_name": str(company_name),
         }
 
@@ -88,6 +88,6 @@ def fetch_stock_data(ticker):
         return {
             "current_price": 0.0,
             "volatility": 0.0,
-            "dividend_yield": 0.0,
+            "dividend_yield": 0.0,  # Decimal
             "company_name": str(ticker),
         }

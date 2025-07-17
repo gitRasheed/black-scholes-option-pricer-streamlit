@@ -76,7 +76,7 @@ r = st.sidebar.number_input(
 )
 q = st.sidebar.number_input(
     "Dividend Yield (%)",
-    value=float(stock_data["dividend_yield"]) * 100,
+    value=stock_data["dividend_yield"] * 100,
     min_value=0.0,
     max_value=20.0,
     step=0.01,
