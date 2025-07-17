@@ -7,4 +7,4 @@ python-dotenv
 ruff==0.9.9
 scipy==1.15.2
 streamlit==1.42.2
-yfinance==0.2.54
+yfinance==0.2.65
